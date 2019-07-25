@@ -19,25 +19,23 @@ public class Data {
      */
     public Data() {
 
-        employees.add(new Node("cell1", "Ředitel", "Jan Novák"));
-        employees.add(new Node("cell2", "Manažer", "Jiří Svoboda"));
-        employees.add(new Node("cell3", "Účetní", "Ondřej Nový"));
-        employees.add(new Node("cell14", "Obchodní zástupce", "Michal Malý"));
-        employees.add(new Node("cell5", "IT ředitel", "Jan Černý"));
-        employees.add(new Node("cell6", "Zákaznický servis", "Věra Zelená"));
-        employees.add(new Node("cell77", "Back Office", "Jana Králová"));
-        employees.add(new Node("cell8", "EMEA Law Specialist", "Jana Králová"));
-        employees.add(new Node("cell9", "Asistentka", "Jana Králová"));
-        employees.add(new Node("cell10", "Kontrola", "Ondra Nový"));
+        employees.add(new Node("cell1", "Main", "Main class"));
+        employees.add(new Node("cell2", "Data", "Provides Data"));
+        employees.add(new Node("cell3", "Node", "Class represents node"));
+        employees.add(new Node("cell4", "Edge", "Source with target node"));
+        employees.add(new Node("cell5", "Model", "Maths nodes positions"));
+        employees.add(new Node("cell6", "Queue", "First In First out"));
+        employees.add(new Node("cell7", "Draw", "Drawing cells"));
+        employees.add(new Node("cell8", "Cell", "Node with graphics"));
+
 
         edges.add(new Edge("cell1", "cell2"));
-        edges.add(new Edge("cell1", "cell5"));
         edges.add(new Edge("cell2", "cell3"));
+        edges.add(new Edge("cell2", "cell4"));
+        edges.add(new Edge("cell1", "cell5"));
         edges.add(new Edge("cell5", "cell6"));
-        edges.add(new Edge("cell6", "cell77"));
-        edges.add(new Edge("cell6", "cell8"));
-        edges.add(new Edge("cell8", "cell9"));
-        edges.add(new Edge("cell1", "cell10"));
+        edges.add(new Edge("cell1", "cell7"));
+        edges.add(new Edge("cell7", "cell8"));
 
     }
 
