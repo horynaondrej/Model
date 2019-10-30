@@ -72,10 +72,10 @@ public class Draw {
         for (int i = 0; i < this.number_of_nodes; i++) {
             this.cells[i].get_shape().relocate(
                     this.nodes[i].get_y() - (this.cells[i].get_shape().getWidth() / 2), //x
-                    this.nodes[i].get_x() - (this.cells[i].get_shape().getHeight() / 2)); //y
+                    this.nodes[i].get_x() - this.cells[i].get_shape().getHeight()); //y
             this.cells[i].get_text().relocate(
                     this.nodes[i].get_y() + 2 - (this.cells[i].get_shape().getWidth() / 2), //x
-                    this.nodes[i].get_x() + 2 - (this.cells[i].get_shape().getHeight() / 2)); //y
+                    this.nodes[i].get_x() + 2 - this.cells[i].get_shape().getHeight()); //y
         }
     }
 
