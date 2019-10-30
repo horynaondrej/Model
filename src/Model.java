@@ -4,7 +4,7 @@ import javafx.collections.ObservableList;
 import java.util.ArrayList;
 
 /**
- * Created by Ondřej Horyna on 2019-07-21.
+ * Created by Ondřej Horyna on 2019-07-21
  */
 public class Model {
 
@@ -22,7 +22,6 @@ public class Model {
 
     private int number_of_nodes;
     private int maximum_level_number;
-    private int x_scale;
 
     /**
      * Class constructor
@@ -32,14 +31,13 @@ public class Model {
     public Model(ObservableList<Node> param, ObservableList<Edge> edges)
             throws IllegalArgumentException {
 
-        set_x_scale(1);
         set_employees(param, edges);
         set_edges(edges);
         set_nodes_size();
         set_up_matrix();
         initialize_nodes_array();
         load_edges_into_matrix();
-        BFS("cell1");
+        BFS();
         move_node_under_parent();
         find_max_level_depth();
         find_out_siblings();
@@ -47,31 +45,26 @@ public class Model {
         x_directions();
         set_up_level_array();
         set_x_directions();
-        //print_matrix();
 
     }
 
     /**
      * This method set employees into its data list, it also check nodes
-     * with no parents
+     * with no parents and it don't add them
      * @param param
      * @param edges
      */
     public void set_employees(ObservableList<Node> param, ObservableList<Edge> edges) {
-
         this.employees = new ArrayList<>();
-
         for (int i = 0; i < param.size(); i++) {
             for (int j = 0; j < edges.size(); j++) {
-                if (param.get(i).get_key().equals(edges.get(j).get_source())
-                        || param.get(i).get_key().equals(edges.get(j).get_target())) {
+                if (param.get(i).get_key().equals(edges.get(j).getSource())
+                        || param.get(i).get_key().equals(edges.get(j).getTarget())) {
                     this.employees.add(param.get(i));
                     break;
                 }
             }
-
         }
-
     }
 
     /**
@@ -79,31 +72,25 @@ public class Model {
      * @param edges
      */
     public void set_edges(ObservableList<Edge> edges) {
-
         this.edges = new ArrayList<>(edges);
-
     }
 
     /**
      * This method set the number of nodes
      */
     public void set_nodes_size() {
-
         if (this.employees != null) {
             this.number_of_nodes = this.employees.size();
         } else {
             System.out.printf("There is no data in the table!");
         }
-
     }
 
     /**
      * This method initialize matrix 2D int array
      */
     public void set_up_matrix() {
-
         this.matrix = new int[this.number_of_nodes][this.number_of_nodes];
-
     }
 
     /**
@@ -112,7 +99,6 @@ public class Model {
      * @return
      */
     public int return_index(String key) {
-
         int pom = -1;
         for (int i = 0; i < this.number_of_nodes; i++) {
             if (this.nodes[i].get_key().equals(key)) {
@@ -120,7 +106,6 @@ public class Model {
             }
         }
         return pom;
-
     }
 
     /**
@@ -128,13 +113,10 @@ public class Model {
      * @return Cutted job title
      */
     public String new_values_of_text(String x) {
-
         char new_line_char = '\n';
         char[] to_char_array = x.toCharArray();
         char[] new_values = new char[to_char_array.length];
-
         for (int f = 0; f < to_char_array.length; f++) {
-
             if (Character.isSpaceChar(to_char_array[f]) && f > 3) {
                 new_values[f] = new_line_char;
             }
@@ -143,36 +125,30 @@ public class Model {
             }
         }
         return String.valueOf(new_values);
-
     }
 
     /**
      * This method insert a node into the array with nodes
      */
     public void initialize_nodes_array() {
-
         this.nodes = new Node[this.number_of_nodes];
-
         for (int i = 0; i < this.number_of_nodes; i++) {
             this.nodes[i] = new Node(
                     this.employees.get(i).get_key(),
-                    new_values_of_text(this.employees.get(i).get_name()),
-                    new_values_of_text(this.employees.get(i).get_job()));
+                    new_values_of_text(this.employees.get(i).getName()),
+                    new_values_of_text(this.employees.get(i).getJob()));
         }
-
     }
 
     /**
      * This method load edges into matrix
      */
     public void load_edges_into_matrix() {
-
-        for (int i = 0; i < this.edges.size(); i++) {
+        for (Edge edge : this.edges) {
             insert_edge_into_matrix(
-                    this.edges.get(i).get_source(),
-                    this.edges.get(i).get_target());
+                    edge.getSource(),
+                    edge.getTarget());
         }
-
     }
 
     /**
@@ -181,7 +157,6 @@ public class Model {
      * @param end
      */
     public void insert_edge_into_matrix(String start, String end) {
-
         for (int m = 0; m < this.number_of_nodes; m++) {
             if (this.nodes[m].get_key().equals(start)) {
                 for (int n = 0; n < this.number_of_nodes; n++) {
@@ -191,14 +166,12 @@ public class Model {
                 }
             }
         }
-
     }
 
     /**
      * This method print the whole matrix
      */
     public void print_matrix() {
-
         System.out.println("\nThe Matrix\n");
         for (int i = 0; i <= this.number_of_nodes; i++) {
             if (i != this.number_of_nodes) {
@@ -216,7 +189,6 @@ public class Model {
             System.out.println();
         }
         System.out.println();
-
     }
 
     /**
@@ -224,105 +196,64 @@ public class Model {
      * only as return method
      */
     public double y_directions(int key) {
-
         double vertical_step;
-
         if (key == 0) {
-            vertical_step = Main.height / 2;
+            vertical_step = 471 / 2;
         } else {
-            vertical_step = Main.height / (key + 1);
+            vertical_step = 471 / (key + 1);
         }
         return vertical_step;
-
     }
 
     /**
      * This method cuts canvas via number of nodes
      */
     public double x_directions() {
-
-        int sum = 0;
-        for (int i = 0; i < this.number_of_nodes; i++) {
-            for (int j = 0; j < this.number_of_nodes; j++) {
-                if (this.matrix[i][j] == 1) {
-                    sum++;
-                    break;
-                }
-            }
-        }
-        return Main.width / (sum + this.x_scale);
-
-    }
-
-    /**
-     * This method set sum variable
-     * @param param
-     */
-    public void set_x_scale(int param) {
-
-        this.x_scale = param;
-
-    }
-
-    /**
-     * This method increase sum of nodes
-     */
-    public void increase_x_scale() {
-
-        this.x_scale++;
-
+        return 500 / (this.maximum_level_number + 1);
     }
 
     /**
      * This method set x position of nodes
      */
     public void set_x_directions() {
-
-        int scale = 1;
         if (this.x_directions_array != null) {
             for (int i = 0; i < this.number_of_nodes; i++) {
                 for (int j = 0; j < this.x_directions_array.length; j++) {
                     if (this.nodes[i].get_distance() == this.x_directions_array[j]) {
-                        if (this.number_of_nodes < 5) {
-                            scale = 2;
-                        }
-                        this.nodes[i].set_x((x_directions() * this.x_directions_array[j]) + (x_directions() / scale));
-                        if (this.nodes[i].get_x() > Main.width) {
-                            increase_x_scale();
-                            set_x_directions();
-                        }
+                        this.nodes[i].set_x((x_directions() * (this.x_directions_array[j] + 1)));
                     }
                 }
             }
         }
-
     }
 
     /**
      * Method for set up an array with levels of nodes
      */
     public void set_up_level_array() {
-
-        this.maximum_level_number++;
         this.x_directions_array = new double[this.maximum_level_number];
         for (int i = 0; i < this.maximum_level_number; i++) {
             this.x_directions_array[i] = i;
         }
+    }
 
+    /**
+     * Returns the key of first node
+     * @return String
+     */
+    public String first_node() {
+        return this.nodes[0].get_key();
     }
 
     /**
      * Method for breath first search
-     * @param firstNode
      */
-    public void BFS(String firstNode) {
-
+    public void BFS() {
         Queue fr = new Queue(this.number_of_nodes);
-        int s = return_index(firstNode);
+        int s = return_index(first_node());
         this.nodes[s].set_color('S');
         this.nodes[s].set_distance(0);
         fr.insert(s);
-
         while (!fr.is_empty()) {
             int i = fr.select();
             for (int j = 0; j < this.number_of_nodes; j++) {
@@ -336,14 +267,12 @@ public class Model {
             }
             this.nodes[i].set_color('C');
         }
-
     }
 
     /**
      * This method move exact node, which has more than one father
      */
     public void move_node_under_parent() {
-
         int max = 0;
         int node = 0;
         int count = 0;
@@ -358,34 +287,30 @@ public class Model {
                 }
             }
             if (count > 1) {
-                this.nodes[node].set_distance(this.nodes[max].get_distance() + 1);
+                this.nodes[node].set_distance(this.nodes[max].get_distance());
                 move_other_node_under_parent(node);
             }
             max = 0;
             count = 0;
         }
-
     }
 
     /**
      * This method have to move node compare to previous node scheme
      */
     public void move_other_node_under_parent(int node) {
-
         for (int i = 0; i < this.number_of_nodes; i++) {
             if (this.matrix[node][i] == 1) {
                 this.nodes[i].set_distance(this.nodes[node].get_distance() + 1);
                 move_other_node_under_parent(i);
             }
         }
-
     }
 
     /**
      * Method find the max value of siblings
      */
     public void find_max_level_depth() {
-
         this.maximum_level_number = 0;
         for (int i = 0; i < this.number_of_nodes; i++) {
             if (this.nodes[i].get_distance() > this.maximum_level_number) {
@@ -393,14 +318,12 @@ public class Model {
             }
         }
         this.maximum_level_number++;
-
     }
 
     /**
      * This method find out how many siblings the node has
      */
     public void find_out_siblings() {
-
         int count = 0;
         for (int i = 0; i < this.number_of_nodes; i++) {
             for (int j = 0; j < this.number_of_nodes; j++) {
@@ -411,14 +334,12 @@ public class Model {
             this.nodes[i].set_siblings(count);
             count = 0;
         }
-
     }
 
     /**
      * This method draw the nodes in y directions
      */
     public void set_y_directions() {
-
         double points, step;
         for (int a = 0; a < this.maximum_level_number; a++) {
             for (int j = 0; j < this.number_of_nodes; j++) {
@@ -431,7 +352,6 @@ public class Model {
                 }
             }
         }
-
     }
 
     /**
@@ -439,9 +359,7 @@ public class Model {
      * @return
      */
     public Node[] get_nodes() {
-
         return nodes;
-
     }
 
 }
